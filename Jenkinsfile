@@ -72,8 +72,8 @@ pipeline {
                     set -e
 
                     GIT_REVISION=`cat currenntVersion`
-                    // docker build / run ....
-		    // docker-compose ...
+                    # docker build / run ....
+		    # docker-compose ...
                 '''
             }
          }
@@ -84,6 +84,11 @@ pipeline {
             node ('master') {
                 script {
                     env.GIT_URL = env.GIT_URL_1
+		    notifyRocketChat(
+                        channelName: 'dummy',
+                        minioCredentialsId: 'jenkins-minio-credentials',
+                        minioHostUrl: 'https://minio.cloud.cosm-lab.science'
+                    )
                     withCredentials([string(credentialsId: 'CloudRushTlg-token', variable: 'TLG_TOKEN')]) {
                         notifyTelegram(
                             minioHostUrl: 'https://minio.cloud.cosm-lab.science',
